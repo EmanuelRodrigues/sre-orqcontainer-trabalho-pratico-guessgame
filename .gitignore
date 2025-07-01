@@ -1,12 +1,29 @@
-.venv
-.vscode
-Dockerfile*
-docker-compose*
-*/__pycache__/*
-db/*
-*.sqlite3
+# Ignorar ambientes virtuais
+venv/
+backend/venv/
+frontend/venv/
+
+# Ignorar dependências do Node.js
+node_modules/
+frontend/node_modules/
+
+# Ignorar arquivos do Cypress (gerados)
+cypress/videos/
+cypress/screenshots/
+
+# Ignorar arquivos temporários
+__pycache__/
 *.pyc
 *.pyo
-bin/
-*.lock
 
+# Ignorar configs locais
+.env
+*.log
+
+# Ignorar pastas de build
+build/
+frontend/build/
+
+# IDEs
+.vscode/
+.idea/

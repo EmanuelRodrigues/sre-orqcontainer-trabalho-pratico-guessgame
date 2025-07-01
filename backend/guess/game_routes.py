@@ -8,12 +8,12 @@ from .discover import Guess, WrongAttempt
 game_bp = Blueprint('game_bp', __name__)
 
 
+
 def hash_password(password, salt):
     """Hash a password with the given salt."""
     hasher = hashlib.sha256()
     hasher.update(f"{salt}{password}".encode('utf-8'))
     return hasher.hexdigest()
-
 
 @game_bp.route('/create', methods=['POST'])
 def create_game():

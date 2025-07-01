@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
-from repository import dynamodb, hash, sqlite, postgres
+from repository import hash, postgres
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 import pathlib
 
@@ -18,7 +18,7 @@ def create_app(config=None):
     if app.config.get('TESTING'):
         app.db = hash.HashRepository()
     else:
-        db_type = app.config.get('DB_TYPE', 'dynamodb')
+        db_type = app.config.get('DB_TYPE', 'postgres')
         if db_type == 'sqlite':
             path = "{}/db/database.db".format(pathlib.Path(__file__).parent.parent.absolute())
             app.db = sqlite.SQLiteRepository(app.config.get('DB_PATH', path))
@@ -27,7 +27,7 @@ def create_app(config=None):
             app.db = dynamodb.DynamoDBRepository(db_table_name)
         elif db_type == 'postgres':
             db_string = (f"dbname={app.config.get('DB_NAME')} user={app.config.get('DB_USER')}"
-                         f" password={app.config.get('DB_PASSWORD')} host={app.config.get('DB_HOST')}")
+                         f" password={app.config.get('DB_PASSWORD')} host={app.config.get('DB_HOST')} port={app.config.get('DB_PORT')}")
             try:
                 app.db = postgres.PostgresRepository(db_string)
             except Exception as e:

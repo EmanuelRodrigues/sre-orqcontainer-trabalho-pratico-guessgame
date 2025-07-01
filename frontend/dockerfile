@@ -1,0 +1,25 @@
+# Etapa de build
+FROM node:18.17.0-alpine as build
+
+WORKDIR /app
+
+COPY public ./public
+COPY src ./src
+COPY package.json ./
+COPY .env ./env
+COPY cypress.config.ts ./
+COPY default.conf ./
+COPY jest.config.ts ./
+COPY package.json ./
+COPY tsconfig.json ./
+
+# Habilite o yarn
+RUN corepack enable
+# Instale as dependências do node com o npm:
+RUN npm install
+# Exporte a url onde está executando o backend e execute o backend.
+
+ENV PORT=80
+EXPOSE 80
+#ENV REACT_APP_BACKEND_URL=http://localhost:5000
+CMD ["yarn", "start"]

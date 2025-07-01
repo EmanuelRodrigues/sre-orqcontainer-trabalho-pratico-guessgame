@@ -1,0 +1,21 @@
+# Usa imagem Python leve
+FROM python:3.11-slim AS build
+
+WORKDIR /app
+
+# Copia e instala dependências
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copia o código
+COPY guess/ ./guess
+COPY repository/ ./repository
+COPY .env .
+COPY run.py .
+#COPY . .
+
+# Define variável de ambiente Flask
+ENV FLASK_APP=run.py
+EXPOSE 3000
+
+CMD ["python", "-m", "flask", "run", "--host=0.0.0.0", "--port=3000"]
