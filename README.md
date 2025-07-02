@@ -10,7 +10,7 @@ Este projeto é uma aplicação web do tipo **"Guess Game"**, com uma arquitetur
 
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
-
+- Executar o docker compose na mesma máquina que a aplicação será utilizada.
 ### 📥 Passos
 
 1. Clone este repositório:
