@@ -1,88 +1,85 @@
-# 🎮 Guess Game - Sistema Distribuído com Containers
+Este projeto é uma aplicação web do tipo "Guess Game", contendo uma arquitetura composta por frontend, backend, banco de dados e balanceamento de carga com NGINX, tudo orquestrado via Docker Compose.
 
-Este projeto implementa uma aplicação de adivinhação de número (Guess Game) dividida em **três serviços** principais: frontend (React), backend (Flask) e banco de dados (PostgreSQL), todos orquestrados via Docker Compose.
+🚀 Como Instalar e Rodar
+✅ Pré-requisitos
+Docker
+Docker Compose
 
-⚙️ Componentes
-🖥️ Frontend (guess-game-frontend)
-Desenvolvido com React.
+📥 Passos
+Clone este repositório:
+git clone https://github.com/seu-usuario/guess-game.git
+cd guess-game
 
-Comunica-se com o backend via a variável REACT_APP_BACKEND_URL.
+Suba os containers:
+docker-compose up -d
 
-Expõe a aplicação na porta 1800.
+Acesse a aplicação:
+Interface web (frontend): http://localhost:8080
+Backend: http://localhost:2600
 
-🐍 Backend (guess-game-backend)
-API construída com Flask.
 
-Expõe a porta 3000, redirecionada para 2600 na máquina host.
+📐 Decisões de Design
+🔧 Serviços
+Frontend (React):
 
-Conecta-se ao banco de dados PostgreSQL via variáveis de ambiente.
+Dois containers (guess-game-frontend-1 e guess-game-frontend-2) são utilizados para simular múltiplas instâncias, permitindo o balanceamento de carga.
 
-🗄️ Banco de Dados (guess-game-database)
-Utiliza a imagem oficial do PostgreSQL 15.3-alpine.
+Imagem: emanuelbrodrigues/emanuelbrodrigues-orqcontainer-guessgame-frontend:1.
 
-Persistência de dados via volume postgres-data.
+Backend (Flask):
 
-Porta padrão do Postgres (5432) exposta como 5132.
+Fornece a API da aplicação, conectando-se ao banco de dados PostgreSQL.
 
-🚀 Como executar
-Pré-requisitos: Docker e Docker Compose instalados
+Imagem: emanuelbrodrigues/emanuelbrodrigues-orqcontainer-guessgame-backend:1.
 
-🚀 Como executar
-Pré-requisitos: Docker e Docker Compose instalados
+Banco de Dados (PostgreSQL):
 
-Clone o repositório:
+Utiliza imagem oficial postgres:15.3-alpine.
+
+Armazena os dados persistentes do jogo.
+
+Utiliza volume nomeado postgres-data.
+
+NGINX:
+
+Atua como balanceador de carga para as instâncias de frontend.
+
+Encaminha requisições HTTP para as instâncias React.
+
+Utiliza uma configuração personalizada (configuracao-nginx.conf).
+
+
+
+🔁 Estratégia de Balanceamento de Carga
+O NGINX é configurado para balancear a carga entre as duas instâncias do frontend React, melhorando a disponibilidade e permitindo escalabilidade horizontal.
+
+A configuração está no arquivo configuracao-nginx.conf (que deve estar no mesmo diretório do docker-compose.yml). O NGINX escuta na porta 8080 do host e distribui as requisições entre os containers guess-game-frontend-1 e guess-game-frontend-2.
+
+📦 Volumes
+postgres-data: volume persistente onde os dados do banco PostgreSQL são armazenados, garantindo que os dados não se percam caso o container seja reiniciado ou removido.
+
+🌐 Redes
+A rede padrão do Docker Compose é utilizada automaticamente, permitindo que os serviços se comuniquem entre si por seus nomes de container, como:
+
+http://guess-game-backend:3000 (acessado pelos frontends)
+
+guess-game-database (acessado pelo backend)
+
+
+🔄 Atualização dos Componentes
+Cada serviço é baseado em uma imagem Docker versionada. Para atualizar qualquer componente:
+
+🔁 Atualizar a Imagem
+Edite o docker-compose.yml e altere a tag da imagem (por exemplo, de :1 para :2):
+
+yaml
+Copiar
+Editar
+image: emanuelbrodrigues/emanuelbrodrigues-orqcontainer-guessgame-frontend:2
+Execute os comandos:
 
 bash
 Copiar
 Editar
-git clone https://github.com/EmanuelRodrigues/sre-orqcontainer-trabalho-pratico-guessgame.git
-cd sre-orqcontainer-trabalho-pratico-guessgame
-Suba os serviços:
-
-bash
-Copiar
-Editar
-docker compose up -d
-Acesse:
-
-Frontend: http://localhost:1800
-
-Backend API: http://localhost:2600
-
-PostgreSQL: localhost:5132 (usuário: postgres, senha: password)
-
-🛠️ Variáveis de Ambiente
-Frontend
-Variável	Descrição
-REACT_APP_BACKEND_URL	URL do backend Flask (ex: http://localhost:2600)
-
-Backend
-Variável	Descrição
-FLASK_DB_TYPE	Tipo de banco (postgres)
-FLASK_DB_USER	Usuário do banco
-FLASK_DB_PASSWORD	Senha do banco
-FLASK_DB_NAME	Nome do banco de dados
-FLASK_DB_HOST	Host do banco de dados
-FLASK_DB_PORT	Porta do banco de dados
-
-🧪 Testes
-Testes do backend localizados em backend/tests/
-
-Testes do frontend com Cypress em frontend/cypress/
-
-🐳 Imagens Docker utilizadas
-Serviço	Imagem
-Frontend	emanuelbrodrigues/emanuelbrodrigues-orqcontainer-guessgame-frontend:1
-Backend	emanuelbrodrigues/emanuelbrodrigues-orqcontainer-guessgame-backend:1
-Banco de dados	postgres:15.3-alpine
-
-🧠 Objetivo do Projeto
-Este projeto foi desenvolvido como parte do trabalho prático da disciplina de Orquestração de Containers (SRE), com o objetivo de demonstrar:
-
-Separação de responsabilidades entre frontend, backend e banco
-
-Utilização de variáveis de ambiente para integração
-
-Empacotamento em imagens Docker públicas
-
-Orquestração com Docker Compose
+docker-compose pull
+docker-compose up -d
