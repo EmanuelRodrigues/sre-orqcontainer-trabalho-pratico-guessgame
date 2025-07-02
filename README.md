@@ -16,8 +16,8 @@ Este projeto é uma aplicação web do tipo **"Guess Game"**, com uma arquitetur
 1. Clone este repositório:
 
    ```bash
-   git clone https://github.com/seu-usuario/guess-game.git
-   cd guess-game
+   git clone https://github.com/EmanuelRodrigues/sre-orqcontainer-trabalho-pratico-guessgame
+   cd sre-orqcontainer-trabalho-pratico-guessgame
    ```
 
 2. Suba os containers:
