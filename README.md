@@ -1,6 +1,6 @@
 # 🎮 Guess Game - Aplicação Web com Docker Compose
 
-Este projeto é uma aplicação web do tipo **"Guess Game"**, com uma arquitetura composta por **frontend**, **backend**, **banco de dados** e **balanceamento de carga com NGINX**, tudo orquestrado via **Docker Compose**.
+Este projeto é um simples jogo de adivinhação desenvolvido utilizando o framework Flask. O jogador deve adivinhar uma senha criada aleatoriamente, e o sistema fornecerá feedback sobre o número de letras corretas e suas respectivas posições. A aplicação é composta por uma arquitetura constituída por **frontend**, **backend**, **banco de dados** e **balanceamento de carga com NGINX**, tudo orquestrado via **Docker Compose**.
 
 ---
 
@@ -31,6 +31,28 @@ Este projeto é uma aplicação web do tipo **"Guess Game"**, com uma arquitetur
    - **Interface Web (Frontend):** [http://localhost:8080](http://localhost:8080)
    - **Backend (via NGINX):** [http://localhost:9090](http://localhost:9090)
 
+---
+### Como Jogar
+
+#### 1. Criar um novo jogo
+Acesse a url do frontend
+
+Digite uma frase secreta
+
+Envie
+
+Salve o game-id
+
+
+#### 2. Adivinhar a senha
+
+Acesse a url do frontend
+
+Vá para o endponint breaker
+
+Digite o game_id que foi gerado pelo Creator
+
+Tente adivinhar
 ---
 
 ## 📐 Decisões de Design
@@ -121,3 +143,9 @@ Cada serviço utiliza imagens Docker **versionadas**, facilitando o processo de 
    ```
 
 ---
+### Estrutura do Código
+
+#### Rotas:
+
+- **`/create`**: Cria um novo jogo. Armazena a senha codificada em base64 e retorna um `game_id`.
+- **`/guess/<game_id>`**: Permite ao usuário adivinhar a senha. Compara a adivinhação com a senha armazenada e retorna o resultado.
