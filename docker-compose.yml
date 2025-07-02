@@ -3,24 +3,19 @@ version: "3.8"
 services:
   guess-game-frontend-1:
     image: emanuelbrodrigues/emanuelbrodrigues-orqcontainer-guessgame-frontend:1
-    container_name: guess-game-frontend
-    restart: always
+    container_name: guess-game-frontend-1
+    restart: on-failure
     environment:
-      REACT_APP_BACKEND_URL: http://localhost:2600
+      REACT_APP_BACKEND_URL: http://localhost:9090
     depends_on:
-      - guess-game-backend
+      - guess-game-nginx
+    ports:
+      - "8080:80"  
 
-  guess-game-frontend-2:
-    image: emanuelbrodrigues/emanuelbrodrigues-orqcontainer-guessgame-frontend:1
-    container_name: guess-game-frontend-2
-    restart: always
-    environment:
-      REACT_APP_BACKEND_URL: http://localhost:2600
-
-  guess-game-backend:
+  guess-game-backend-1:
     image: emanuelbrodrigues/emanuelbrodrigues-orqcontainer-guessgame-backend:1
-    container_name: guess-game-backend
-    restart: always
+    container_name: guess-game-backend-1
+    restart: on-failure
     environment:
       FLASK_DB_TYPE: postgres
       FLASK_DB_USER: postgres
@@ -28,34 +23,49 @@ services:
       FLASK_DB_PASSWORD: password
       FLASK_DB_HOST: guess-game-database
       FLASK_DB_PORT: 5432
-    ports:
-      - 2600:3000
+    expose:
+      - "3000"
     depends_on:
       - guess-game-database
-      
+
+  guess-game-backend-2:
+    image: emanuelbrodrigues/emanuelbrodrigues-orqcontainer-guessgame-backend:1
+    container_name: guess-game-backend-2
+    restart: on-failure
+    environment:
+      FLASK_DB_TYPE: postgres
+      FLASK_DB_USER: postgres
+      FLASK_DB_NAME: mydatabase
+      FLASK_DB_PASSWORD: password
+      FLASK_DB_HOST: guess-game-database
+      FLASK_DB_PORT: 5432
+    expose:
+      - "3000"
+    depends_on:
+      - guess-game-database
+
   guess-game-database:
     image: postgres:15.3-alpine
     container_name: guess-game-database
-    restart: always
+    restart: on-failure
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: mydatabase
-
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
-  nginx:
+  guess-game-nginx:
     image: nginx:alpine
     container_name: guess-game-nginx
-    restart: always
+    restart: on-failure
     ports:
-      - "8080:80"
+      - "9090:80"
     volumes:
       - ./configuracao-nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
-      - guess-game-frontend-1
-      - guess-game-frontend-2
+      - guess-game-backend-1
+      - guess-game-backend-2
 
 volumes:
   postgres-data:
