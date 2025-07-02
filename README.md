@@ -98,8 +98,15 @@ A rede padrão do Docker Compose é utilizada automaticamente, permitindo comuni
 Cada serviço utiliza imagens Docker **versionadas**, facilitando o processo de atualização.
 
 ### 🛠️ Como atualizar uma imagem
+1. Com o repositório clonado, acesse o componente a ser acessado. Por exemplo, o front-end.
 
-1. Edite o `docker-compose.yml` e altere a tag da imagem desejada.  
+2. Realize as alterações nos códigos conforme necessidade.
+
+3. Execute o build da imagem: docker built -t componente .
+
+4. Faça o push da imagem para o repositório de imagens (registry).
+
+5. Edite o `docker-compose.yml` e altere a tag da imagem desejada.  
    Exemplo:
 
    ```yaml
@@ -112,17 +119,5 @@ Cada serviço utiliza imagens Docker **versionadas**, facilitando o processo de 
    docker-compose pull
    docker-compose up -d
    ```
-
----
-
-## 🧪 Testando a Aplicação
-
-- Após subir os containers, verifique se o frontend está acessível via navegador em [http://localhost:8080](http://localhost:8080).
-- Teste se o backend responde corretamente às chamadas feitas pelo frontend.
-- Observe os logs dos serviços para diagnosticar qualquer erro:
-
-  ```bash
-  docker-compose logs -f
-  ```
 
 ---
