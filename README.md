@@ -32,27 +32,33 @@ Este projeto é um simples jogo de adivinhação desenvolvido utilizando o frame
    - **Backend (via NGINX):** [http://localhost:9090](http://localhost:9090)
 
 ---
-### Como Jogar
 
-#### 1. Criar um novo jogo
-Acesse a url do frontend
+## 🎯 Como Jogar
 
-Digite uma frase secreta
+### 1️⃣ Criar um Novo Jogo
 
-Envie
+1. Acesse a interface do **frontend**:  
+   [http://localhost:8080](http://localhost:8080)
 
-Salve o game-id
+2. Digite uma **frase secreta**.
 
+3. Clique em **Enviar**.
 
-#### 2. Adivinhar a senha
+4. Copie e **salve o `game_id`** gerado (você precisará dele para adivinhar a senha).
 
-Acesse a url do frontend
+---
 
-Vá para o endponint breaker
+### 2️⃣ Adivinhar a Frase Secreta
 
-Digite o game_id que foi gerado pelo Creator
+1. Acesse novamente o **frontend**:  
+   [http://localhost:8080](http://localhost:8080)
 
-Tente adivinhar
+2. Vá para a seção **"Breaker"**.
+
+3. Insira o `game_id` salvo anteriormente.
+
+4. Tente adivinhar a frase secreta!
+
 ---
 
 ## 📐 Decisões de Design
